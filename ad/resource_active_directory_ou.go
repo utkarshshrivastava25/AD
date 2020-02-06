@@ -1,0 +1,129 @@
+package ad
+
+import (
+	"fmt"
+	"log"
+	"strconv"
+	"strings"
+
+	ldap "gopkg.in/ldap.v3"
+
+	"github.com/hashicorp/terraform/helper/schema"
+)
+
+func resourceOU() *schema.Resource {
+	return &schema.Resource{
+		Create: resourceADouCreate,
+		Read:   resourceADouRead,
+		Delete: resourceADouDelete,
+		Schema: map[string]*schema.Schema{
+			"ou_name": {
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+			},
+			"domain": {
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+			},
+		},
+	}
+}
+func resourceADouCreate(d *schema.ResourceData, m interface{}) error {
+	client := m.(*ldap.Conn)
+	OUname := d.Get("ou_name").(string)
+	domain := d.Get("domain").(string)
+	var dnOfOU string
+	dnOfOU += "OU=" + OUname
+	domainArr := strings.Split(domain, ".")
+	for _, item := range domainArr {
+		dnOfOU += ",DC=" + item
+	}
+	log.Printf("[DEBUG] dnOfOU: %s ", dnOfOU)
+	log.Printf("[DEBUG] Adding OU : %s ", OUname)
+	err := addOU(OUname, dnOfOU, client)
+	if err != nil {
+		log.Printf("[ERROR] Error while adding OU: %s ", err)
+		return fmt.Errorf("Error while adding OU %s", err)
+	}
+	log.Printf("[DEBUG] OU Added successfully: %s", OUname)
+	d.SetId(domain + "/" + OUname)
+	return nil
+}
+
+func resourceADouRead(d *schema.ResourceData, m interface{}) error {
+	client := m.(*ldap.Conn)
+	OUname := d.Get("ou_name").(string)
+	domain := d.Get("domain").(string)
+	var dnOfOU string
+	dnOfOU += "OU=" + OUname
+	domainArr := strings.Split(domain, ".")
+	dnOfOU += "dc=" + domainArr[0]
+	for index, i := range domainArr {
+		if index == 0 {
+			continue
+		}
+		dnOfOU += ",dc=" + i
+	}
+	log.Printf("[DEBUG] dnOfOU: %s ", dnOfOU)
+	log.Printf("[DEBUG] Deleting OU : %s ", OUname)
+
+	NewReq := ldap.NewSearchRequest( //represents the search request send to the server
+		dnOfOU, // base dnOfOU.
+		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0,
+		false,
+		"(&(objectClass=organizationalUNit)(cn="+ou_name+"))", //applied filter
+		[]string{"dnOfOU", "cn"},
+		nil,
+	)
+
+	sr, err := client.Search(NewReq)
+	if err != nil {
+		log.Printf("[ERROR] while seaching OU : %s", err)
+		return fmt.Errorf("Error while searching  OU : %s", err)
+	}
+
+	fmt.Println("[ERROR] Found " + strconv.Itoa(len(sr.Entries)) + " Entries")
+	for _, entry := range sr.Entries {
+		fmt.Printf("%s: %v\n", entry.DN, entry.GetAttributeValue("cn"))
+
+	}
+
+	if len(sr.Entries) == 0 {
+		log.Println("[ERROR] OU not found")
+		d.SetId("")
+	}
+	return nil
+}
+
+func resourceADouDelete(d *schema.ResourceData, m interface{}) error {
+	log.Println("[ERROR] Finding OU")
+	resourceADouRead(d, m)
+	if d.Id() == "" {
+		log.Println("[ERROR] Cannot find OU in the specified AD")
+		return fmt.Errorf("[ERROR] Cannot find OU in the specified AD")
+	}
+	client := m.(*ldap.Conn)
+
+	OU_name := d.Get("OU_name").(string)
+	domain := d.Get("domain").(string)
+
+	var dnOfOU string
+	dnOfOU += "OU=" + OUname
+	domainArr := strings.Split(domain, ".")
+	for _, item := range domainArr {
+		dnOfOU += ",DC=" + item
+	}
+
+	log.Printf("[DEBUG] Name of the DN is : %s ", dnOfOU)
+	log.Printf("[DEBUG] Deleting the OU from the AD : %s ", OU_name)
+
+	err := deleteOU(dnOfOU, client)
+	if err != nil {
+		log.Printf("[ERROR] Error while Deleting OU from AD : %s ", err)
+		return fmt.Errorf("Error while Deleting OU from AD %s", err)
+	}
+	log.Printf("[DEBUG] OU deleted from AD successfully: %s", OU_name)
+	return nil
+}
