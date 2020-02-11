@@ -46,7 +46,8 @@ func Provider() terraform.ResourceProvider {
 			"ad_computer_to_ou": resourceComputerToOU(),
 			"ad_group_to_ou":    resourceGroupToOU(),
 			"ad_add_to_group":   resourceAddToGroup(),
-			"ad_user"       :    resourceUser(),
+			"ad_user":           resourceUser(),
+			"ad_ou":             resourceOU(),
 		},
 
 		ConfigureFunc: providerConfigure,
