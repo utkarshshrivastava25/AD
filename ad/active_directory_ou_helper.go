@@ -16,7 +16,7 @@ func addOU(OUname string, dnOfOU string, adConn *ldap.Conn) error {
 }
 
 func deleteOU(dnOfOU string, adConn *ldap.Conn) error {
-	delRequest := ldap.NewDelRequest(dnOfOU, nil)
+	delRequest := ldap.NewDelRequest(dnOfOU, nil)                        //creates a delete request for the given DN
 	err := adConn.Del(delRequest)
 	if err != nil {
 		return err
