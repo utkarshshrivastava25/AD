@@ -6,7 +6,7 @@ func addOU(OUname string, dnOfOU string, adConn *ldap.Conn) error {
 
 	addRequest := ldap.NewAddRequest(dnOfOU, nil)
 	addRequest.Attribute("objectClass", []string{"organizationalUNit"})
-	addRequest.Attribute("sAMAccountName", []string{OUname})
+	addRequest.Attribute("sAMAccountName", []string{OUname})               //login name
 	
 	err := adConn.Add(addRequest)
 	if err != nil {
