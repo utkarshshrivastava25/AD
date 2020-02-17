@@ -30,7 +30,7 @@ func resourceOU() *schema.Resource {
 	}
 }
 func resourceADouCreate(d *schema.ResourceData, m interface{}) error {      //called at terraform apply
-	client := m.(*ldap.Conn)
+	client := m.(*ldap.Conn)                                            // m is our client to talk to server
 	ouName := d.Get("ou_name").(string)
 	domain := d.Get("domain").(string)
 	var dnOfOU string
