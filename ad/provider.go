@@ -3,7 +3,7 @@ package ad
 import (
 	"log"
 
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform/helper/schema"      // ensures consistency between providers
 	"github.com/hashicorp/terraform/terraform"
 )
 
