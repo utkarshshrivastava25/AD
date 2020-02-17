@@ -30,15 +30,15 @@ func resourceOU() *schema.Resource {
 		},
 	}
 }
-func resourceADouCreate(d *schema.ResourceData, m interface{}) error {
+func resourceADouCreate(d *schema.ResourceData, m interface{}) error {      //called at terraform apply
 	client := m.(*ldap.Conn)
 	ouName := d.Get("ou_name").(string)
 	domain := d.Get("domain").(string)
 	var dnOfOU string
-	dnOfOU += "OU=" + ouName
+	dnOfOU += "OU=" + ouName                                            //object's entire path to the root
 	domainArr := strings.Split(domain, ".")
 	for _, item := range domainArr {
-		dnOfOU += ",dc=" + item
+		dnOfOU += ",dc=" + item                                      //dc =domain-component
 	}
 	log.Printf("[DEBUG] dnOfOU: %s ", dnOfOU)
 	log.Printf("[DEBUG] Adding OU : %s ", ouName)
@@ -52,14 +52,14 @@ func resourceADouCreate(d *schema.ResourceData, m interface{}) error {
 	return nil
 }
 
-func resourceADouRead(d *schema.ResourceData, m interface{}) error {
+func resourceADouRead(d *schema.ResourceData, m interface{}) error {  
 	client := m.(*ldap.Conn)
 	ouName := d.Get("ou_name").(string)
 	domain := d.Get("domain").(string)
 	var dnOfOU string
 	dnOfOU += "OU=" + ouName
 	domainArr := strings.Split(domain, ".")
-	dnOfOU += "dc=" + domainArr[0]
+	dnOfOU += "dc=" + domainArr[0]                              
 	for index, i := range domainArr {
 		if index == 0 {
 			continue
