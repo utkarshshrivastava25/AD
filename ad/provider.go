@@ -54,7 +54,7 @@ func Provider() terraform.ResourceProvider {
 	}
 }
 
-func providerConfigure(d *schema.ResourceData) (interface{}, error) {
+func providerConfigure(d *schema.ResourceData) (interface{}, error) {         //returns a client that will communicate with the API
 
 	config := Config{
 		Domain:   d.Get("domain").(string),
