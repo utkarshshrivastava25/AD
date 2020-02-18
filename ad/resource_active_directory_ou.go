@@ -16,7 +16,7 @@ func resourceOU() *schema.Resource {
 		Create: resourceADouCreate,
 		Read:   resourceADouRead,
 		Delete: resourceADouDelete,
-		Schema: map[string]*schema.Schema{
+		Schema: map[string]*schema.Schema{                      //mapping attribute to what it is
 			"ou_name": {
 				Type:     schema.TypeString,
 				Required: true,
