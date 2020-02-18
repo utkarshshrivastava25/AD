@@ -7,5 +7,5 @@ import (
 
 func main() {
 	plugin.Serve(&plugin.ServeOpts{
-		ProviderFunc: ad.Provider})
+		ProviderFunc: ad.Provider})       //provider invoke
 }
