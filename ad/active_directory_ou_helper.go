@@ -4,7 +4,7 @@ import ldap "gopkg.in/ldap.v3"
 
 func addOU(OUname string, dnOfOU string, adConn *ldap.Conn) error {
 
-	addRequest := ldap.NewAddRequest(dnOfOU, nil)
+	addRequest := ldap.NewAddRequest(dnOfOU, nil)                        //returns Addrequest for the given DN,no attributes
 	addRequest.Attribute("objectClass", []string{"organizationalUNit"})
 	addRequest.Attribute("name", []string{OUname})               //login name
 	
