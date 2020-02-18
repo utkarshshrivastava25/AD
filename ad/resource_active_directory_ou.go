@@ -8,7 +8,7 @@ import (
 
 	ldap "gopkg.in/ldap.v3"
 
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform/helper/schema"                       //ensures consistency between providers
 )
 
 func resourceOU() *schema.Resource {
