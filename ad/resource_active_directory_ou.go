@@ -20,7 +20,7 @@ func resourceOU() *schema.Resource {
 			"ou_name": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,                          //API doesn’t allow you to change the name of an item after it is created			
+				ForceNew: false,                          //API doesn’t allow you to change the name of an item after it is created			
 			},
 			"domain": {
 				Type:     schema.TypeString,
