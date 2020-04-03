@@ -1,7 +1,7 @@
 -include $(HOME)/.tf-ad-devrc.mk
 
 TEST?=$$(go list ./... |grep -v 'vendor')
-GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
+GOFMT_FILES?=$$(find . -name '*,.go' |grep -v vendor)
 
 default: build
 
