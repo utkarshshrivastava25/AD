@@ -23,3 +23,4 @@ func removeFromGroup(groupToRemoveName string, targetGroupName string, adConn *l
 	}
 	return nil
 }
+}
