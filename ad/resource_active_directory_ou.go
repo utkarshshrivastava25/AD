@@ -80,12 +80,6 @@ func resourceADouRead(d *schema.ResourceData, m interface{}) error {
 		log.Printf("[ERROR] while seaching OU : %s", err)
 	}
 
-	fmt.Println("[ERROR] Found " + strconv.Itoa(len(sr.Entries)) + " Entries")
-	for _, entry := range sr.Entries {
-		fmt.Printf("%s: %v\n", entry.DN, entry.GetAttributeValue("cn"))
-
-	}
-
 	if len(sr.Entries) == 0 {
 		log.Println("[ERROR] OU not found")
 		d.SetId("")
