@@ -78,7 +78,6 @@ func resourceADouRead(d *schema.ResourceData, m interface{}) error {
 	sr, err := client.Search(NewReq)
 	if err != nil {
 		log.Printf("[ERROR] while seaching OU : %s", err)
-		return fmt.Errorf("Error while searching  OU : %s", err)
 	}
 
 	fmt.Println("[ERROR] Found " + strconv.Itoa(len(sr.Entries)) + " Entries")
