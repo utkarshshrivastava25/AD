@@ -66,8 +66,8 @@ func resourceADouRead(d *schema.ResourceData, m interface{}) error {
 	log.Printf("[DEBUG] dnOfOU: %s ", dnOfOU)
 	log.Printf("[DEBUG] Deleting OU : %s ", ouName)
 
-	NewReq := ldap.NewSearchRequest( //represents the search request send to the server
-		dnOfOU, // base dnOfOU.
+	NewReq := ldap.NewSearchRequest( 
+		dnOfOU, 
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0,
 		false,
 		"(&(objectClass=organizationalUNit)(cn="+ouName+"))", //applied filter
