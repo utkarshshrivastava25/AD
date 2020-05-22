@@ -70,7 +70,7 @@ func resourceADouRead(d *schema.ResourceData, m interface{}) error {
 		dnOfOU, 
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0,
 		false,
-		"(&(objectClass=organizationalUNit)(cn="+ouName+"))", //applied filter
+		"(&(objectClass=organizationalUNit)(cn="+ouName+"))", 
 		[]string{"dnOfOU", "cn"},
 		nil,
 	)
