@@ -60,11 +60,8 @@ func resourceADouRead(d *schema.ResourceData, m interface{}) error {
 	dnOfOU += "OU=" + ouName
 	domainArr := strings.Split(domain, ".")
 	dnOfOU += "dc=" + domainArr[0]                              
-	for index, i := range domainArr {
-		if index == 0 {
-			continue
-		}
-		dnOfOU += ",dc=" + i
+	for _, item := range domainArr {
+		dnOfOU += ",dc=" + item                                      //dc =domain-component
 	}
 	log.Printf("[DEBUG] dnOfOU: %s ", dnOfOU)
 	log.Printf("[DEBUG] Deleting OU : %s ", ouName)
