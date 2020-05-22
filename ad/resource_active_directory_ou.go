@@ -102,7 +102,6 @@ func resourceADouDelete(d *schema.ResourceData, m interface{}) error {          
 	resourceADouRead(d, m)
 	if d.Id() == "" {
 		log.Println("[ERROR] Cannot find OU in the specified AD")
-		return fmt.Errorf("[ERROR] Cannot find OU in the specified AD")
 	}
 	client := m.(*ldap.Conn)
 
