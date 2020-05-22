@@ -108,7 +108,6 @@ func resourceADComputerDelete(d *schema.ResourceData, meta interface{}) error {
 	resourceADComputerRead(d, meta)
 	if d.Id() == "" {
 		log.Println("[ERROR] Cannot find Computer in the specified AD")
-		return fmt.Errorf("[ERROR] Cannot find Computer in the specified AD")
 	}
 	client := meta.(*ldap.Conn)
 
