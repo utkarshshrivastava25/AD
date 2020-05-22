@@ -98,7 +98,7 @@ func resourceADouRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceADouDelete(d *schema.ResourceData, m interface{}) error {              // m is interface, we have to assert the type as the client type
-	log.Println("[ERROR] Finding OU")
+	
 	resourceADouRead(d, m)
 	if d.Id() == "" {
 		log.Println("[ERROR] Cannot find OU in the specified AD")
